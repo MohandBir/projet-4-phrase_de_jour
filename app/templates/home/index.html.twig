@@ -8,7 +8,7 @@
         <tbody>
             {% for sentence in sentences %}
                 <tr class="table-active">
-                    <td>La phrase du {{sentence.createdAt | date('d/m/Y')}} 👁️</td>
+                    <td>La phrase du <a href="{{ path('app_home_show', {id: sentence.id}) }}">{{sentence.createdAt | date('d/m/Y')}} </a> 👁️</td>
                     <td>
                         <span class="badge rounded-pill bg-{{sentence.category.color}}">{{sentence.category.name}}</span>
                     </td>

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Accueil{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Les phrase du jour</h1>
+    <table class="table table-hover">
+        <tbody >
+            <tr class="table-active">
+                <td class="bg-{{sentence.category.color}}">
+                    <span class="badge rounded-pill">{{sentence.category.name}}</span>
+                </td>
+            </tr>
+            <tr class="table-active">
+                <td class="bg-{{sentence.category.color}}">
+                    <strong>{{sentence.createdAt | date('d/m/Y')}}</strong> 
+                    <p>{{sentence.content}}</p>
+                </td>
+            </tr>
+            <tr class="table-active">
+                <td class="bg-{{sentence.category.color}}">  👍🏻 {{sentence.likes}}</td>
+            </tr>
+               
+        </tbody>
+    </table>
+{% endblock %}
