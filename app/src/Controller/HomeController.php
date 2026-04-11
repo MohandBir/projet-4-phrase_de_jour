@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(SentenceRepository $sentenceRepo, EntityManagerInterface $manager): Response
+    public function index(SentenceRepository $sentenceRepo,): Response
     {
         $sentences = $sentenceRepo->findBy(
             [],    
@@ -25,11 +25,21 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/show/{id}', name: 'app_home_show')]
-    public function show(Sentence $sentence, EntityManagerInterface $manager): Response
+    public function show(Sentence $sentence): Response
     {
-
         return $this->render('home/show.html.twig', [
             'sentence' => $sentence
         ]);
+    }
+
+    #[Route('/show/like/{id}', name: 'app_home_like')]
+    public function like($id, Sentence $sentence, EntityManagerInterface $manager): Response
+    {
+        $sentence->setLikes($sentence->getLikes() + 1);
+        $manager->flush();
+        return $this->redirectToRoute('app_home_show', [
+            'id' => $id,
+            ]);
+        
     }
 }
