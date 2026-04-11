@@ -13,7 +13,7 @@
             </tr>
             <tr>
                 <td class="bg-{{sentence.category.color}}">
-                    <strong>{{sentence.createdAt | date('d/m/Y')}}</strong> 
+                    <strong>{{sentence.createdAt | date('d/m/Y' )}}</strong> 
                     <p>{{sentence.content}}</p>
                 </td>
             </tr>
@@ -22,7 +22,15 @@
                     <a href="{{path('app_home_like', {id: sentence.id})}}" class="text-decoration-none">👍🏻</a> {{sentence.likes}}
                 </td>
             </tr>
-               
         </tbody>
     </table>
+    <div>
+        <h2>Commentaires</h2>
+        {% for comment in sentence.comments %}
+            <p>
+                <strong>{{comment.user.username}}</strong> 
+                ({{comment.createdAt | date('\\l\\e d/m/Y à H:i:s' )}}) : {{comment.content}} 
+            </p>
+        {% endfor %}
+    </div>
 {% endblock %}

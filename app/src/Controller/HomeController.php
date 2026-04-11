@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Sentence;
+use App\Repository\CommentRepository;
 use App\Repository\SentenceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,10 +26,10 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/show/{id}', name: 'app_home_show')]
-    public function show(Sentence $sentence): Response
+    public function show($id, Sentence $sentence, CommentRepository $commentRepo,): Response
     {
         return $this->render('home/show.html.twig', [
-            'sentence' => $sentence
+            'sentence' => $sentence,
         ]);
     }
 
