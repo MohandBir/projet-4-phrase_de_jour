@@ -37,6 +37,7 @@ final class HomeController extends AbstractController
     {
         $sentence->setLikes($sentence->getLikes() + 1);
         $manager->flush();
+
         return $this->redirectToRoute('app_home_show', [
             'id' => $id,
             ]);
