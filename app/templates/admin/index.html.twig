@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Espace Administration</h1>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Phrase du jour</th>
+                <th>Categorie</th>
+                <th>Modifier</th>
+                <th>Supprimer</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sentence in sentences %}
+                <tr class="table-active">
+                    <td>
+                        <a href="" class="text-decoration-none">{{sentence.createdAt | date('d/m/Y')}} </a>
+                    </td>
+                    <td>
+                        <a href="" class="text-decoration-none">{{sentence.content}}</a>
+                    </td>
+                    <td>
+                        <span class="badge rounded-pill bg-{{sentence.category.color}}">{{sentence.category.name}}</span>
+                    </td>
+                    <td class="text-center"><a href="#" class="text-decoration-none">✏️</a></td>                    
+                    <td class="text-center"><a href="#" class="text-decoration-none">❌</a></td>                    
+                </tr>
+                
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -12,6 +12,11 @@
           </a>
         </li>
         {% if app.user %}
+          {% if is_granted('ROLE_ADMIN') %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{path('app_admin_index')}}">Admin</a>
+            </li>
+          {% endif %}
           <li class="nav-item">
             <a class="nav-link" href="{{path('app_logout')}}">Deconnexion<span class="fw-normal text-danger">{{'<' ~ app.user.username ~ '>'}}</span></a>
           </li>
