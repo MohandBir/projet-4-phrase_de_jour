@@ -24,13 +24,31 @@
             </tr>
         </tbody>
     </table>
-    <div>
-        <h2>Commentaires</h2>
-        {% for comment in sentence.comments %}
-            <p>
-                <strong>{{comment.user.username}}</strong> 
-                ({{comment.createdAt | date('\\l\\e d/m/Y à H:i:s' )}}) : {{comment.content}} 
-            </p>
-        {% endfor %}
-    </div>
+
+    <h2>Commentaires</h2>
+    {% if app.user %}
+        {{form_start(formView)}}
+            <div>
+                {{form_widget( formView.content, {
+                    attr: {
+                        class: 'form-control',
+                        rows: 1
+                    }
+                })}}
+                {{form_errors(formView.content)}}
+            </div>
+            <button type="submit" class="btn bg-primary mb-3">Commenter</button>
+        {{form_end(formView)}}
+    {% endif %}
+
+    {# {% if sentence.comments is not empty %} #}
+    {% for comment in sentence.comments %}
+        <p>
+            <strong>{{comment.user.username}}</strong> 
+            ({{comment.createdAt | date('\\l\\e d/m/Y à H:i:s' )}}) : {{comment.content}} 
+        </p>
+    {% else %}
+        <p class="fw-bold">Soyez le premier à commenter !!</p>    
+    {% endfor %}
+
 {% endblock %}
