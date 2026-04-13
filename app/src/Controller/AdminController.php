@@ -66,4 +66,18 @@ final class AdminController extends AbstractController
             'isUpdated' => $isUpdated,
         ]);
     }
+
+    #[Route('/admin/remove/{id}', name: 'app_admin_remove')]
+    public function remove(Sentence $sentence, EntityManagerInterface $em): Response
+    {
+        if ( !$this->IsGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_home');
+        }
+        $em->remove($sentence);
+        $em->flush();
+        
+        $this->addFlash('success', 'la phrase : "' . substr($sentence->getContent(), 0, 20) . '..." est supprimée avec succès !');
+
+        return $this->redirectToRoute('app_admin_index');
+    }
 }
