@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminController!{% endblock %}
+{% set action = (isUpdated ? 'Modifier' : 'Ajouter') %}
+
+{% block title %}{{action}} une phrase du jour {% endblock %}
 
 {% block body %}
-    <h1 class="mb-4">Ajouter une phrase du jour</h1>
+    <h1 class="mb-4">{{action}} une phrase du jour</h1>
 
     {{form_start(formView)}}
     <div class="mb-2">
@@ -30,7 +32,7 @@
             {{form_errors(formView.category)}}
         </div>
     </div>
-    <input type="submit" value="Ajouter" class="btn bg-primary">
+    <input type="submit" value="{{action}}" class="btn bg-primary">
     {{form_end(formView)}}
 
 {% endblock %}
