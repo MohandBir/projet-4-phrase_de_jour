@@ -3,7 +3,19 @@
 {% block title %}Hello AdminController!{% endblock %}
 
 {% block body %}
+
+    {# affichage de message #}
+    {% for type, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-dismissible alert-{{type}}">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <p class="mb-0 fs-4">{{message}}</p>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
     <h1 class="mb-4">Espace Administration</h1>
+    <p>Ajouter une phrase du jour <a href="{{path('app_admin_add')}}" class="text-decoration-none">➕</a>​</p>
     <table class="table table-hover">
         <thead>
             <tr>
@@ -17,12 +29,8 @@
         <tbody>
             {% for sentence in sentences %}
                 <tr class="table-active">
-                    <td>
-                        <a href="" class="text-decoration-none">{{sentence.createdAt | date('d/m/Y')}} </a>
-                    </td>
-                    <td>
-                        <a href="" class="text-decoration-none">{{sentence.content}}</a>
-                    </td>
+                    <td class="fw-semibold">{{sentence.createdAt | date('d/m/Y')}}</td>                    
+                    <td class="fw-semibold">{{sentence.content}}</td>
                     <td>
                         <span class="badge rounded-pill bg-{{sentence.category.color}}">{{sentence.category.name}}</span>
                     </td>

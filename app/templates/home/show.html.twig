@@ -14,7 +14,7 @@
             <tr>
                 <td class="bg-{{sentence.category.color}}">
                     <strong>{{sentence.createdAt | date('d/m/Y' )}}</strong> 
-                    <p>{{sentence.content}}</p>
+                    <p class="fs-5">{{sentence.content}}</p>
                 </td>
             </tr>
             <tr>
@@ -48,7 +48,10 @@
             ({{comment.createdAt | date('\\l\\e d/m/Y à H:i:s' )}}) : {{comment.content}} 
         </p>
     {% else %}
-        <p class="fw-bold">Soyez le premier à commenter !!</p>    
+        {% if app.user %}
+            <p class="fw-bold">Soyez le premier à commenter !!</p>    
+        {% endif %}
+        <p>Aucun commentaire !</p>
     {% endfor %}
 
 {% endblock %}

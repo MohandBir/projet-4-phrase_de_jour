@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Ajouter une phrase du jour</h1>
+
+    {{form_start(formView)}}
+    <div class="mb-2">
+        {{form_label(formView.content, 'Contenu :', {
+            label_attr: { 'class': 'fs-3 mb-1' }
+        })}}
+        {{form_widget(formView.content, {
+            attr: { 'class': 'form-control mb-1'}
+        })}}
+        <div class="text-danger small">
+            {{form_errors(formView.content)}}
+        </div>
+    </div>
+    <div class="mb-2">
+        {{form_label(formView.category, 'Category :', {
+            label_attr: { 'class': 'fs-3' }
+        })}}
+        {{form_widget(formView.category, {
+            attr: { 'class': 'form-select-sm fs-6',
+                    'style': 'height: 35px;'
+            }
+        })}}
+        <div class="text-danger small">
+            {{form_errors(formView.category)}}
+        </div>
+    </div>
+    <input type="submit" value="Ajouter" class="btn bg-primary">
+    {{form_end(formView)}}
+
+{% endblock %}
