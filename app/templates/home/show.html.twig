@@ -19,7 +19,11 @@
             </tr>
             <tr>
                 <td class="bg-{{sentence.category.color}} text-end">
-                    <a href="{{path('app_home_like', {id: sentence.id})}}" class="text-decoration-none">👍🏻</a> {{sentence.likes}}
+                    {% if app.user %}
+                    <a href="{{path('app_home_like', {id: sentence.id})}}" class="text-decoration-none"> 👍🏻</a> {{sentence.likes}}
+                    {% else %}
+                    <span>👍🏻 {{sentence.likes}}</span>
+                    {% endif %}
                 </td>
             </tr>
         </tbody>

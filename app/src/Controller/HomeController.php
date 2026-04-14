@@ -30,7 +30,7 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/show/{id}', name: 'app_home_show')]
-    public function show(Sentence $sentence, Request $request, EntityManagerInterface $em): Response
+    public function show($id, Sentence $sentence, Request $request, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(CommentType::class);
         $form->handleRequest($request);
@@ -45,6 +45,8 @@ final class HomeController extends AbstractController
                 ;
                 $em->persist($comment);
                 $em->flush();
+
+
                 return $this->redirectToRoute('app_home_show', [
                     'id' => $sentence->getId(),
                 ]);           
@@ -58,15 +60,38 @@ final class HomeController extends AbstractController
     }
  
     #[Route('/show/like/{id}', name: 'app_home_like')]
-    public function like($id, Sentence $sentence, EntityManagerInterface $manager): Response
+    public function like($id, Sentence $sentence, Request $request, EntityManagerInterface $manager): Response
     {
-        $sentence->setLikes($sentence->getLikes() + 1);
-        $manager->flush();
+        $session = $request->getSession();
+        $idsLiked = $session->get('idsLiked', []);
 
-        return $this->redirectToRoute('app_home_show', [
-            'id' => $id,
+        if (!$session->get('idsLiked')) {
+            $idsLiked[] = $id;
+            $session->set('idsLiked', $idsLiked);
+ 
+            $sentence->setLikes($sentence->getLikes() + 1);
+            $manager->flush();
+    
+            return $this->redirectToRoute('app_home_show', [
+                'id' => $id,
+                'isLiked' => false
             ]);
-        
-    }
+        } elseif (!in_array($id, $session->get('idsLiked'))) {
+            $idsLiked[] = $id;
+            $session->set('idsLiked', $idsLiked);
 
+            $sentence->setLikes($sentence->getLikes() + 1);
+            $manager->flush();
+    
+            return $this->redirectToRoute('app_home_show', [
+                'id' => $id,
+                'isLiked' => false
+            ]);
+        } 
+        // sinon la phrase est déja liké :
+        return $this->redirectToRoute('app_home_show', [
+                'id' => $id,
+                'isLiked' => true
+        ]);        
+    }   
 }
