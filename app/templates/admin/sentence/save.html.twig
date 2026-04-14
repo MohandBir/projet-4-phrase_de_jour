@@ -9,7 +9,7 @@
 
     {{form_start(formView)}}
     <div class="mb-2">
-        {{form_label(formView.content, 'Contenu :', {
+        {{form_label(formView.content, 'Phrase du jour :', {
             label_attr: { 'class': 'fs-3 mb-1' }
         })}}
         {{form_widget(formView.content, {
@@ -21,13 +21,18 @@
     </div>
     <div class="mb-2">
         {{form_label(formView.category, 'Category :', {
-            label_attr: { 'class': 'fs-3' }
-        })}}
-        {{form_widget(formView.category, {
-            attr: { 'class': 'form-select-sm fs-6',
-                    'style': 'height: 35px;'
-            }
-        })}}
+            label_attr: { 'class': 'fs-4 mb-2' }
+        })}}   
+
+        {% for choice in formView.category %}
+            <div class="">
+                {{ form_widget(choice, {
+                attr: {'class': 'mb-3'}
+                }) }}
+                {{ form_label(choice) }}
+            </div>
+        {% endfor %}     
+
         <div class="text-danger small">
             {{form_errors(formView.category)}}
         </div>

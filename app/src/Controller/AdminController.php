@@ -44,9 +44,9 @@ final class AdminController extends AbstractController
         $form = $this->createForm(SentenceType::class, $sentence);
         $form->handleRequest($request);
         $data = $form->getData();
-
         // gestion de soumission du formulaire
         if ($form->isSubmitted() && $form->isValid()) {
+            $sentence = (!$sentence) ? new Sentence : $sentence;
             $sentence->setContent($data->getContent())
             ->setCreatedAt(new DateTimeImmutable())
             ->setLikes(0)
@@ -55,7 +55,7 @@ final class AdminController extends AbstractController
             $em->persist($sentence);
             $em->flush();
 
-            $action = ($isUpdated) ? substr($sentence->getContent(), 0, 20) . '..." est modifié' : substr($sentence->getContent(), 0, 10) . '...\"] ajoutée' ;
+            $action = ($isUpdated) ? substr($sentence->getContent(), 0, 20) . '..." est modifié' : substr($sentence->getContent(), 0, 10) . '..." ajoutée' ;
             $this->addFlash('success', "La phrase \"$action avec succès !");
             
             return $this->redirectToRoute('app_admin_index');
@@ -68,16 +68,21 @@ final class AdminController extends AbstractController
     }
 
     #[Route('/admin/remove/{id}', name: 'app_admin_remove')]
-    public function remove(Sentence $sentence, EntityManagerInterface $em): Response
+    public function remove(Sentence $sentence, Request $request, EntityManagerInterface $em) 
     {
         if ( !$this->IsGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_home');
         }
-        $em->remove($sentence);
-        $em->flush();
-        
-        $this->addFlash('success', 'la phrase : "' . substr($sentence->getContent(), 0, 20) . '..." est supprimée avec succès !');
+        $submitedToken = $request->getPayload()->get('token');
+        if ($this->isCsrfTokenValid('delete', $submitedToken)) {
+            $em->remove($sentence);
+            $em->flush();
+            
+            $this->addFlash('success', 'la phrase : "' . substr($sentence->getContent(), 0, 20) . '..." est supprimée avec succès !');
 
-        return $this->redirectToRoute('app_admin_index');
+            return $this->redirectToRoute('app_admin_index');
+        }
+
     }
+
 }
